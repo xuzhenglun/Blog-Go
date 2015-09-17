@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {{template "header"}}
+  <title>Category - My blog of Go </title>
+</head>
+
+<body>
+  <div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      {{template "navbar" .}}
+    </div>
+  </div>
+  <div class="jumbotron masthead">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Topic List</h2>
+        </div>
+        <div class="col-md-3 col-md-offset-5 row col-sm-9">
+          <table border="0">
+            <caption></caption>
+            <tbody>
+              <tr>
+                <td></td>
+              </tr>
+              <tr>
+                <td> <a href="/topic/add" class="btn btn-default col-md-offset-3 row-md-offset-1">Add Topic</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <script type="text/javascript">
+        function checkInput() {
+          var name = document.getElementById("name");
+          if (name.value.length == 0) {
+            alert("Invild Category");
+            return false;
+          }
+          return true;
+        }
+      </script>
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Updated</th>
+            <th>Views</th>
+            <th>Replys</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {{range .Topics}}
+            <th>{{.Id}}</th>
+            <th><a href="/topic/view/{{.Id}}">{{.Title}}</a></th>
+            <th>{{.Updated}}</th>
+            <th>{{.Views}}</th>
+            <th>{{.ReplyCount}}</th>
+            <th><a href="/topic/delete/{{.Id}}">Delete</a></th>
+          </tr>
+          {{end}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {{template "header"}}
+  <title>{{.Topic.Title}} - My blog of Go </title>
+</head>
+
+<body>
+  <div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      {{template "navbar" .}}
+    </div>
+  </div>
+  <div class="jumbotron masthead">
+    <div class="container">
+      <h1>{{.Topic.Title}}
+        <a href="/topic/modify?tid={{.Tid}}" class="btn btn-default">Modify Topic</a>
+      </h1>
+      {{.Topic.Content}}
+    </div>
+  </div>
+  <div class="container">
+      <h3>Replies: </h3>
+      {{$tid := .Topic.Id}}
+      {{$islogin := .IsLogin}}
+    {{range .Replies}}
+    <h4>{{.Name}}
+      <small>{{.Created}}</small>
+      {{if $islogin}}<a href="/reply/delete?rid={{.Id}}&tid={{$tid}}">Delete</a>{{end}}
+    </h4>
+    {{.Content}}
+    {{end}}
+    <form method="POST" action="/reply/add">
+      <input type="hidden" name="tid" value="{{.Topic.Id}}">
+      <div class="form-group">
+        <label>Nickname: </label>
+        <input type="text" class="form-control" name="nickname">
+      </div>
+      <div class="form-group">
+        <label>Content: </label>
+        <textarea name="content" id="" cols="30" rows="10" class="form-control"></textarea>
+      </div>
+      <button class="btn btn-default">Supply</button>
+    </form>
+  </div>
+</body>
+
+</html>
