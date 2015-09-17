@@ -1,8 +1,8 @@
 package main
 
 import (
-	"blog/controllers"
-	"blog/models"
+	"github.com/xuzhenglun/Blog-Go/controllers"
+	"github.com/xuzhenglun/Blog-Go/models"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 )

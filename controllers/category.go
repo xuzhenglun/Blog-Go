@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"blog/models"
 	"github.com/astaxie/beego"
+	"github.com/xuzhenglun/Blog-Go/models"
 )
 
 type CategoryController struct {
@@ -13,6 +13,11 @@ func (this *CategoryController) Get() {
 	op := this.Input().Get("op")
 	switch op {
 	case "add":
+		if !checkAccount(this.Ctx) {
+			this.Redirect("/login", 302)
+			return
+		}
+
 		name := this.Input().Get("name")
 		if len(name) == 0 {
 			break
@@ -25,6 +30,11 @@ func (this *CategoryController) Get() {
 		return
 
 	case "del":
+		if !checkAccount(this.Ctx) {
+			this.Redirect("/login", 302)
+			return
+		}
+
 		id := this.Input().Get("id")
 		if len(id) == 0 {
 			break
