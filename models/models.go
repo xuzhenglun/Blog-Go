@@ -318,3 +318,61 @@ func DeleteTopics(cid string) error {
 	}
 	return nil
 }
+
+func UpdateTopicInfo(id string) error {
+	tid, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		return err
+	}
+
+	o := orm.NewOrm()
+	replies := make([]Comment, 0)
+	_, err = o.QueryTable("Comment").Filter("Tid", tid).All(&replies)
+	if err != nil {
+		return err
+	}
+
+	replyNum := len(replies)
+	var lasttime time.Time
+	for _, reply := range replies {
+		if lasttime.Before(reply.Created) {
+			lasttime = reply.Created
+		}
+	}
+
+	topic := &Topic{Id: tid}
+	err = o.Read(topic)
+	if err != nil {
+		return err
+	}
+	topic.ReplyCount = int64(replyNum)
+	topic.ReplyTime = lasttime
+
+	_, err = o.Update(topic)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func DeleteReplies(tid string) error {
+	tidNum, err := strconv.ParseInt(tid, 10, 64)
+	if err != nil {
+		return err
+	}
+
+	replies := make([]Comment, 0)
+	o := orm.NewOrm()
+	_, err = o.QueryTable("Comment").Filter("Tid", tidNum).All(&replies)
+	if err != nil {
+		return err
+	}
+	for _, reply := range replies {
+		_, err = o.Delete(&reply)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}

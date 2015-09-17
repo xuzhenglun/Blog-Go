@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"github.com/xuzhenglun/Blog-Go/models"
 	"github.com/astaxie/beego"
+	"github.com/xuzhenglun/Blog-Go/models"
 )
 
 type ReplyController struct {
@@ -15,6 +15,11 @@ func (this *ReplyController) Add() {
 	if err != nil {
 		beego.Error(err)
 	}
+	err = models.UpdateTopicInfo(tid)
+	if err != nil {
+		beego.Error(err)
+	}
+
 	this.Redirect("/topic/view/"+tid, 302)
 }
 
@@ -25,6 +30,10 @@ func (this *ReplyController) Delete() {
 
 	tid := this.Input().Get("tid")
 	err := models.DeleteReply(this.Input().Get("rid"))
+	if err != nil {
+		beego.Error(err)
+	}
+	err = models.UpdateTopicInfo(tid)
 	if err != nil {
 		beego.Error(err)
 	}

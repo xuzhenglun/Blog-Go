@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"github.com/xuzhenglun/Blog-Go/models"
 	"github.com/astaxie/beego"
+	"github.com/xuzhenglun/Blog-Go/models"
 )
 
 type TopicController struct {
@@ -99,9 +99,17 @@ func (this *TopicController) Delete() {
 		return
 	}
 
-	err := models.DeleteTopic(this.Ctx.Input.Param("0"))
+	tid := this.Ctx.Input.Param("0")
+
+	err := models.DeleteTopic(tid)
 	if err != nil {
 		beego.Error(err)
 	}
+
+	err = models.DeleteReplies(tid)
+	if err != nil {
+		beego.Error(err)
+	}
+
 	this.Redirect("/topic", 302)
 }

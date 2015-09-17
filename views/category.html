@@ -35,12 +35,13 @@
         }
       </script>
       <table class="table table-striped">
+             {{$islogin := .IsLogin}}
         <thead>
           <tr>
             <th>#</th>
             <th>Title</th>
             <th>Topic Count</th>
-            <th>Action</th>
+              {{if $islogin}}<th>Action</th>{{end}}
           </tr>
         </thead>
         <tbody>
@@ -49,9 +50,9 @@
             <th>{{.Id}}</th>
             <th>{{.Title}}</th>
             <th>{{.TopicCount}}</th>
-            <th>
+              {{if $islogin}}<th>
               <a href="/category?op=del&id={{.Id}}">Delete</a>
-            </th>
+            </th>{{end}}
           </tr>
           {{end}}
         </tbody>
