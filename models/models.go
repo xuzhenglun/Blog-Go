@@ -8,6 +8,7 @@ import (
 	"os"
 	"path"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -31,6 +32,7 @@ type Topic struct {
 	Uid             int64
 	Title           string
 	Category        string
+	Tag             string
 	Content         string `orm:"size(5000)"`
 	Attachment      string
 	Created         time.Time `orm:"index"`
@@ -98,8 +100,11 @@ func DeleteCategory(id string) error {
 	return err
 }
 
-func AddTopic(title, category, content string) error {
+func AddTopic(title, category, tag, content string) error {
 	o := orm.NewOrm()
+
+	tags := "#" + strings.Join(strings.Split(tag, ","), "#$") + "$"
+
 	topic := &Topic{
 		Title:     title,
 		Category:  category,
@@ -107,6 +112,7 @@ func AddTopic(title, category, content string) error {
 		Created:   time.Now(),
 		Updated:   time.Now(),
 		ReplyTime: time.Now(),
+		Tag:       tags,
 	}
 
 	_, err := o.Insert(topic)
@@ -114,7 +120,7 @@ func AddTopic(title, category, content string) error {
 	return err
 }
 
-func GetAllTopics(cate string, isDesc bool) ([]*Topic, error) {
+func GetAllTopics(cate, tag string, isDesc bool) ([]*Topic, error) {
 	o := orm.NewOrm()
 	topics := make([]*Topic, 0)
 	qs := o.QueryTable("topic")
@@ -124,6 +130,9 @@ func GetAllTopics(cate string, isDesc bool) ([]*Topic, error) {
 	if isDesc {
 		if len(cate) > 0 {
 			qs = qs.Filter("Category", cate)
+		}
+		if len(tag) > 0 {
+			qs = qs.Filter("Tag__contains", tag)
 		}
 		_, err = qs.OrderBy("-created").All(&topics)
 	} else {
@@ -149,11 +158,14 @@ func GetTopic(tid string) (*Topic, error) {
 
 	topic.Views++
 	_, err = o.Update(topic)
+
+	topic.Tag = strings.Replace(strings.Replace(strings.Replace(topic.Tag, "#$", ",", -1), "$", "", -1), "#", "", -1)
 	return topic, err
 }
 
-func ModifyTopic(tid, title, category, content string) error {
+func ModifyTopic(tid, title, category, tags, content string) error {
 	tidNum, err := strconv.ParseInt(tid, 10, 64)
+	tags = "#" + strings.Join(strings.Split(tags, ","), "#$") + "$"
 	if err != nil {
 		return err
 	}
@@ -165,6 +177,7 @@ func ModifyTopic(tid, title, category, content string) error {
 		Topic.Category = category
 		Topic.Content = content
 		Topic.Updated = time.Now()
+		Topic.Tag = tags
 		o.Update(Topic)
 	}
 	IncreaseCategory(tidNum)

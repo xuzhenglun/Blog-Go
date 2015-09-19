@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"github.com/xuzhenglun/Blog-Go/models"
 	"github.com/astaxie/beego"
+	"github.com/xuzhenglun/Blog-Go/models"
 )
 
 type MainController struct {
@@ -13,7 +13,7 @@ func (this *MainController) Get() {
 	this.Data["IsHome"] = true
 	this.TplNames = "index.html"
 	this.Data["IsLogin"] = checkAccount(this.Ctx)
-	topics, err := models.GetAllTopics(this.Input().Get("cate"), true)
+	topics, err := models.GetAllTopics(this.Input().Get("cate"), this.Input().Get("tag"), true)
 	if err != nil {
 		beego.Error(err)
 	} else {

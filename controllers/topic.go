@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/astaxie/beego"
 	"github.com/xuzhenglun/Blog-Go/models"
+	"strings"
 )
 
 type TopicController struct {
@@ -19,12 +20,13 @@ func (this *TopicController) Post() {
 	content := this.Input().Get("content")
 	tid := this.Input().Get("tid")
 	category := this.Input().Get("category")
+	tags := this.Input().Get("tags")
 
 	var err error
 	if len(tid) == 0 {
-		err = models.AddTopic(title, category, content)
+		err = models.AddTopic(title, category, tags, content)
 	} else {
-		err = models.ModifyTopic(tid, title, category, content)
+		err = models.ModifyTopic(tid, title, category, tags, content)
 	}
 	if err != nil {
 		beego.Error(err)
@@ -37,7 +39,7 @@ func (this *TopicController) Get() {
 	this.TplNames = "topic.html"
 	this.Data["IsLogin"] = checkAccount(this.Ctx)
 
-	topics, err := models.GetAllTopics("", false)
+	topics, err := models.GetAllTopics("", "", false)
 	if err != nil {
 		beego.Error(err)
 	} else {
@@ -67,12 +69,14 @@ func (this *TopicController) View() {
 	tid := this.Ctx.Input.Param("0")
 	this.Data["Topic"] = topic
 	this.Data["Tid"] = tid
+	this.Data["Tag"] = strings.Split(topic.Tag, ",")
 
 	replies, err := models.GetAllReplies(tid)
 	if err != nil {
 		beego.Error(err)
 		return
 	}
+
 	this.Data["Replies"] = replies
 }
 
