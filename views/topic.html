@@ -66,7 +66,10 @@
             <th>{{.Views}}</th>
             <th>{{.ReplyCount}}</th>
             <th>{{.ReplyTime}}</th>
-            <th><a href="/topic/delete/{{.Id}}">Delete</a></th>
+            <th>
+              <a href="/topic/modify?tid={{.Id}}">Modify</a>
+              <a href="/topic/delete/{{.Id}}">Delete</a>
+            </th>
           </tr>
           {{end}}
         </tbody>
