@@ -3,7 +3,7 @@
 
 <head>
   {{template "header"}}
-  <title>Home - My blog of Go </title>
+  <title>{{i18n .Lang "home.Title"}}</title>
 </head>
 
 <body>
@@ -12,28 +12,30 @@
       {{template "navbar" .}}
     </div>
   </div>
-
   <div class="jumbotron masthead">
     <div class="container">
       <div class="col-md-9">
-        {{range .Topics}}
+        {{$created := .created_lang}} {{$views := .views_lang}} {{$replys := .replys_lang}}{{$Lang := .Lang}} {{range .Topics}}
         <div class="page-header">
-          <h1><a href="/topic/view/{{.Id}}">{{.Title}}</a></h1>
-          <h6 class="test-muted">Created in {{.Created}}. Views:{{.Views}},Replys: {{.ReplyCount}}</h6>
+          <h1>
+            <li><a href="/topic/view/{{.Id}}">{{.Title}}</a></li>
+          </h1>
+          <h6 class="test-muted">{{i18n $Lang $created}}: {{.Created}}. {{i18n $Lang $views}}: {{.Views}}. {{i18n $Lang $replys}}: {{.ReplyCount}}.</h6>
           <p>{{.Content}}</p>
         </div>
         {{end}}
       </div>
       <div class="col-md-3">
-        <h3>Category</h3>
+        <h3>{{i18n .Lang .cate_lang}}</h3>
         <ul>
-        {{range .Categories}}
+          {{range .Categories}}
           <li><a href="/?cate={{.Title}}">{{.Title}}</a></li>
           {{end}}
         </ul>
       </div>
     </div>
   </div>
+{{template "script"}}
 </body>
 
 </html>

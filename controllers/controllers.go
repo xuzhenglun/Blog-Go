@@ -7,7 +7,7 @@ import (
 )
 
 type LoginController struct {
-	beego.Controller
+	baseController
 }
 
 func (this *LoginController) Get() {
@@ -17,6 +17,7 @@ func (this *LoginController) Get() {
 		this.Ctx.SetCookie("pwd", "", -1, "/")
 		this.Redirect("/", 301)
 	}
+	this.locale()
 	this.TplNames = "login.html"
 	//this.Ctx.WriteString(fmt.Sprint(this.Input()))
 }

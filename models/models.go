@@ -100,19 +100,20 @@ func DeleteCategory(id string) error {
 	return err
 }
 
-func AddTopic(title, category, tag, content string) error {
+func AddTopic(title, category, tag, content, attachment string) error {
 	o := orm.NewOrm()
 
 	tags := "#" + strings.Join(strings.Split(tag, ","), "#$") + "$"
 
 	topic := &Topic{
-		Title:     title,
-		Category:  category,
-		Content:   content,
-		Created:   time.Now(),
-		Updated:   time.Now(),
-		ReplyTime: time.Now(),
-		Tag:       tags,
+		Title:      title,
+		Category:   category,
+		Content:    content,
+		Created:    time.Now(),
+		Updated:    time.Now(),
+		ReplyTime:  time.Now(),
+		Tag:        tags,
+		Attachment: attachment,
 	}
 
 	_, err := o.Insert(topic)
@@ -163,16 +164,21 @@ func GetTopic(tid string) (*Topic, error) {
 	return topic, err
 }
 
-func ModifyTopic(tid, title, category, tags, content string) error {
+func ModifyTopic(tid, title, category, tags, content, attachment string) error {
 	tidNum, err := strconv.ParseInt(tid, 10, 64)
 	tags = "#" + strings.Join(strings.Split(tags, ","), "#$") + "$"
 	if err != nil {
 		return err
 	}
+
+	var oldAtta string
+
 	DecreaseCategory(tidNum)
 	o := orm.NewOrm()
 	Topic := &Topic{Id: tidNum}
 	if o.Read(Topic) == nil {
+		oldAtta = Topic.Attachment
+		Topic.Attachment = attachment
 		Topic.Title = title
 		Topic.Category = category
 		Topic.Content = content
@@ -181,6 +187,10 @@ func ModifyTopic(tid, title, category, tags, content string) error {
 		o.Update(Topic)
 	}
 	IncreaseCategory(tidNum)
+
+	if oldAtta != attachment && len(oldAtta) > 0 {
+		os.Remove(path.Join("attachment", oldAtta))
+	}
 	return nil
 }
 

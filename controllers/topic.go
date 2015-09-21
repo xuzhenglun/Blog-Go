@@ -1,13 +1,18 @@
 package controllers
 
 import (
+	"crypto/md5"
+	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/xuzhenglun/Blog-Go/models"
+	"io"
+	"os"
+	"path"
 	"strings"
 )
 
 type TopicController struct {
-	beego.Controller
+	baseController
 }
 
 func (this *TopicController) Post() {
@@ -22,11 +27,41 @@ func (this *TopicController) Post() {
 	category := this.Input().Get("category")
 	tags := this.Input().Get("tags")
 
-	var err error
+	var attachment string
+	_, fh, err := this.GetFile("attachment")
+	if err != nil {
+		beego.Error(err)
+	}
+
+	if fh != nil {
+		attachment = fh.Filename
+		beego.Info(attachment)
+		fpath := path.Join("attachment", attachment+".tmp")
+		err = this.SaveToFile("attachment", fpath)
+
+		file, err := os.Open(fpath)
+		if err != nil {
+			attachment = ""
+			beego.Error(err)
+		} else {
+			defer file.Close()
+			md5h := md5.New()
+			io.Copy(md5h, file)
+			if tid == "" {
+				tid = "1"
+			}
+			attachment = fmt.Sprintf("%X", md5h.Sum([]byte(""))[:2]) + "_" + tid + "_" + attachment
+			err = os.Rename(fpath, path.Join("attachment", attachment))
+			if err != nil {
+				beego.Error(err)
+			}
+		}
+	}
+
 	if len(tid) == 0 {
-		err = models.AddTopic(title, category, tags, content)
+		err = models.AddTopic(title, category, tags, content, attachment)
 	} else {
-		err = models.ModifyTopic(tid, title, category, tags, content)
+		err = models.ModifyTopic(tid, title, category, tags, content, attachment)
 	}
 	if err != nil {
 		beego.Error(err)
@@ -46,12 +81,14 @@ func (this *TopicController) Get() {
 		this.Data["Topics"] = topics
 	}
 
+	this.locale()
 }
 
 func (this *TopicController) Add() {
 	this.Data["IsLogin"] = checkAccount(this.Ctx)
 	this.Data["IsTopic"] = true
 	this.TplNames = "topic_add.html"
+	this.locale()
 }
 
 func (this *TopicController) View() {
@@ -78,6 +115,7 @@ func (this *TopicController) View() {
 	}
 
 	this.Data["Replies"] = replies
+	this.locale()
 }
 
 func (this *TopicController) Modify() {
@@ -114,6 +152,5 @@ func (this *TopicController) Delete() {
 	if err != nil {
 		beego.Error(err)
 	}
-
 	this.Redirect("/topic", 302)
 }

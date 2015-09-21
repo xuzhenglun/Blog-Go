@@ -6,7 +6,7 @@ import (
 )
 
 type ReplyController struct {
-	beego.Controller
+	baseController
 }
 
 func (this *ReplyController) Add() {

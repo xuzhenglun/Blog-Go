@@ -15,7 +15,7 @@
   <div class="jumbotron masthead">
     <div class="container">
       <h1>Add Topic</h1>
-      <form method="POST" action="/topic/">
+      <form method="POST" action="/topic/" enctype="multipart/form-data">
 
         <div class="form-group">
           <label>Title: </label>
@@ -45,6 +45,7 @@
       < script type = "text/javascript"
       src = "/static/js/bootstrap.min.js"
     </script>
+    {{template "script"}}
 </body>
 
 </html>

@@ -6,7 +6,7 @@ import (
 )
 
 type MainController struct {
-	beego.Controller
+	baseController
 }
 
 func (this *MainController) Get() {
@@ -25,4 +25,6 @@ func (this *MainController) Get() {
 		beego.Error(err)
 	}
 	this.Data["Categories"] = Categories
+
+	this.locale() //locale
 }

@@ -6,7 +6,7 @@ import (
 )
 
 type CategoryController struct {
-	beego.Controller
+	baseController
 }
 
 func (this *CategoryController) Get() {
@@ -63,4 +63,6 @@ func (this *CategoryController) Get() {
 	if err != nil {
 		beego.Error(err)
 	}
+
+	this.locale()
 }

@@ -26,6 +26,9 @@
     </div>
   </div>
   <div class="container">
+    <label>Attachment: <a href="/attachment/{{.Topic.Attachment}}">{{.Topic.Attachment}}</a></label>
+  </div>
+  <div class="container">
     <h3>Replies: </h3>
     {{$tid := .Topic.Id}} {{$islogin := .IsLogin}} {{range .Replies}}
     <h4>{{.Name}}
@@ -46,6 +49,7 @@
       <button class="btn btn-default">Supply</button>
     </form>
   </div>
+  {{template "script"}}
 </body>
 
 </html>
