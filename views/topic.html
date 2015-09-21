@@ -3,7 +3,7 @@
 
 <head>
   {{template "header"}}
-  <title>Category - My blog of Go </title>
+  <title>{{i18n .Lang "Topic.Title"}}</title>
 </head>
 
 <body>
@@ -16,7 +16,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-4">
-          <h2>Topic List</h2>
+          <h2>{{i18n .Lang "Topic.Topic List"}}</h2>
         </div>
         <div class="col-md-3 col-md-offset-5 row col-sm-9">
           <table border="0">
@@ -26,7 +26,7 @@
                 <td></td>
               </tr>
               <tr>
-                <td> <a href="/topic/add" class="btn btn-default col-md-offset-3 row-md-offset-1">Add Topic</a></td>
+                <td> <a href="/topic/add" class="btn btn-default col-md-offset-3 row-md-offset-1">{{i18n .Lang "Topic.Add Topic"}}</a></td>
               </tr>
             </tbody>
           </table>
@@ -49,16 +49,17 @@
         <thead>
           <tr>
             <th>#</th>
-            <th>Title</th>
-            <th>Updated</th>
-            <th>Views</th>
-            <th>Replys</th>
-            <th>Last Reply</th>
-            <th>Action</th>
+            <th>{{i18n .Lang "Topic"}}</th>
+            <th>{{i18n .Lang "Topic.Updated"}}</th>
+            <th>{{i18n .Lang "Topic.Views"}}</th>
+            <th>{{i18n .Lang "Topic.Replies"}}</th>
+            <th>{{i18n .Lang "Topic.Last Reply"}}</th>
+            <th>{{i18n .Lang "Category.Action"}}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
+            {{$Lang:=.Lang}}
             {{range .Topics}}
             <th>{{.Id}}</th>
             <th><a href="/topic/view/{{.Id}}">{{.Title}}</a></th>
@@ -67,8 +68,8 @@
             <th>{{.ReplyCount}}</th>
             <th>{{.ReplyTime}}</th>
             <th>
-              <a href="/topic/modify?tid={{.Id}}">Modify</a>
-              <a href="/topic/delete/{{.Id}}">Delete</a>
+              <a href="/topic/modify?tid={{.Id}}">{{i18n $Lang "Topic.Modify"}}</a>
+              <a href="/topic/delete/{{.Id}}">{{i18n $Lang "Category.Delete"}}</a>
             </th>
           </tr>
           {{end}}

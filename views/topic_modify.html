@@ -3,7 +3,7 @@
 
 <head>
   {{template "header"}}
-  <title>Modify - {{.Topic.Title}} - My blog of Go </title>
+  <title>{{i18n .Lang "Modify Topic.Title"}}</title>
 </head>
 
 <body>
@@ -14,30 +14,30 @@
   </div>
   <div class="jumbotron masthead">
     <div class="container">
-      <h1>Modify Topic</h1>
+      <h1>{{i18n .Lang "Modify Topic.Modify Topic"}}</h1>
       <form method="POST" action="/topic/" enctype="multipart/form-data">
         <input type="hidden" name="tid" value="{{.Tid}}">
         <div class="form-group">
-          <label>Title: </label>
+          <label>{{i18n .Lang "Topic"}}: </label>
           <input type="text" name="title" class="form-control" value="{{.Topic.Title}}">
         </div>
         <div class="form-group">
-          <label>Category: </label>
+          <label>{{i18n .Lang "Category"}}: </label>
           <input type="text" name="category" class="form-control" value="{{.Topic.Category}}">
         </div>
         <div class="form-group">
-          <label>Tags: </label>
+          <label>{{i18n .Lang "Tags"}}: </label>
           <input type="text" name="tags" class="form-control" value="{{.Topic.Tag}}">
         </div>
         <div class="form-group">
-          <label>Contents: </label>
+          <label>{{i18n .Lang "Content"}}: </label>
           <textarea name="content" cols="30" rows="10" class="form-control">{{.Topic.Content}}</textarea>
         </div>
         <div class="form-group">
-          <label>Attachment: <a href="/attachment/{{.Topic.Attachment}}">{{.Topic.Attachment}}</a></label>
+          <label>{{i18n .Lang "Attachment"}}: <a href="/attachment/{{.Topic.Attachment}}">{{.Topic.Attachment}}</a></label>
           <input type="file" name="attachment" class="file">
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button type="{{i18n .Lang "Submit"}}" class="btn btn-default">{{i18n .Lang "Submit"}}</button>
       </form>
     </div>
   </div>

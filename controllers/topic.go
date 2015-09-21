@@ -133,6 +133,7 @@ func (this *TopicController) Modify() {
 
 	this.Data["Topic"] = topic
 	this.Data["Tid"] = tid
+	this.locale()
 }
 
 func (this *TopicController) Delete() {

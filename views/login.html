@@ -18,30 +18,30 @@
       <div class="page-header">
         <form method="POST" action="/login" class="form-horizontal">
           <div class="form-group">
-            <label for="inputEmail3" class="col-sm-2 control-label">Account</label>
+            <label for="inputEmail3" class="col-sm-2 control-label">{{i18n .Lang "Login.Account"}}</label>
             <div class="col-sm-10">
               <input type="email" class="form-control" id="uname" placeholder="Email" name="uname">
             </div>
           </div>
           <div class="form-group">
-            <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+            <label for="inputPassword3" class="col-sm-2 control-label">{{i18n .Lang "Login.Password"}}</label>
             <div class="col-sm-10">
-              <input type="password" class="form-control" id="pwd" placeholder="Password" name="pwd">
+              <input type="password" class="form-control" id="pwd" placeholder="{{i18n .Lang "Login.Password"}}" name="pwd">
             </div>
           </div>
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
               <div class="checkbox">
                 <label>
-                  <input type="checkbox" name="autoLogin"> Remember me
+                  <input type="checkbox" name="autoLogin"> {{i18n .Lang "Login.Remember me"}}
                 </label>
               </div>
             </div>
           </div>
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-              <button type="submit" class="btn btn-default" onclick="return checkInput();">Sign in</button>
-              <button type="submit" class="btn btn-default" onclick="return backToHome();">Back</button>
+              <button type="submit" class="btn btn-default" onclick="return checkInput();">{{i18n .Lang "Login.Sign in"}}</button>
+              <button type="submit" class="btn btn-default" onclick="return backToHome();">{{i18n .Lang "Login.Back"}}</button>
             </div>
           </div>
         </form>
@@ -56,12 +56,12 @@
           function checkInput() {
             var uname = document.getElementById("uname");
             if (uname.value.length == 0) {
-              alert("Invild Username");
+              alert("{{i18n .Lang "Login.Invild Username"}}");
               return false;
             }
             var pwd = document.getElementById("pwd");
             if (pwd.value.length == 0) {
-              alert("Invild Password");
+              alert("{{i18n .Lang "Login.Invild Password"}}");
               return false;
             }
             return true;

@@ -3,7 +3,7 @@
 
 <head>
   {{template "header"}}
-  <title>Category - My blog of Go </title>
+  <title>{{i18n .Lang "Category.Title"}}</title>
 </head>
 <body>
   <div class="navbar navbar-default navbar-fixed-top">
@@ -13,22 +13,22 @@
   </div>
   <div class="jumbotron masthead">
     <div class="container">
-      <h2>Category List</h2>
+      <h2>{{i18n .Lang "Category.Category List"}}</h2>
       <form method="GET" action="/category" class="form-horizontal">
         <div class="form-group">
-          <label class="col-md-2 control-label">Add Category</label>
+          <label class="col-md-2 control-label">{{i18n .Lang "Category.Add Category"}}</label>
           <div class="col-lg-9">
             <input type="hidden" name="op" value="add">
             <input class="form-control" id="name" placeholder="Category" name="name">
           </div>
-          <button type="submit" class="btn btn-default col-md-0" onclick="return checkInput();">Add</button>
+          <button type="submit" class="btn btn-default col-md-0" onclick="return checkInput();">{{i18n .Lang "Category.Add"}}</button>
         </div>
       </form>
       <script type="text/javascript">
         function checkInput() {
           var name = document.getElementById("name");
           if (name.value.length == 0) {
-            alert("Invild Category");
+            alert("{{i18n .Lang "Category.Invild Category"}}");
             return false;
           }
           return true;
@@ -36,12 +36,13 @@
       </script>
       <table class="table table-striped">
              {{$islogin := .IsLogin}}
+             {{$Lang := .Lang}}
         <thead>
           <tr>
             <th>#</th>
-            <th>Title</th>
-            <th>Topic Count</th>
-              {{if $islogin}}<th>Action</th>{{end}}
+            <th>{{i18n .Lang "Topic"}}</th>
+            <th>{{i18n .Lang "Category.Topic Count"}}</th>
+              {{if $islogin}}<th>{{i18n .Lang "Category.Action"}}</th>{{end}}
           </tr>
         </thead>
         <tbody>
@@ -51,7 +52,7 @@
             <th>{{.Title}}</th>
             <th>{{.TopicCount}}</th>
               {{if $islogin}}<th>
-              <a href="/category?op=del&id={{.Id}}">Delete</a>
+              <a href="/category?op=del&id={{.Id}}">{{i18n $Lang "Category.Delete"}}</a>
             </th>{{end}}
           </tr>
           {{end}}
