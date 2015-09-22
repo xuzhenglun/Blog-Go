@@ -16,6 +16,8 @@ func (this *baseController) Prepare() {
 	switch lang {
 	case "zh-CN":
 		this.Data["Lang"] = "zh-CN"
+	case "zh-HK":
+		this.Data["Lang"] = "zh-HK"
 	case "en-US":
 	default:
 		this.Data["Lang"] = "en-US"
