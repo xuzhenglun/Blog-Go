@@ -4,6 +4,8 @@ import (
 	"crypto/md5"
 	"fmt"
 	"github.com/astaxie/beego"
+	"github.com/microcosm-cc/bluemonday"
+	"github.com/russross/blackfriday"
 	"github.com/xuzhenglun/Blog-Go/models"
 	"io"
 	"os"
@@ -104,14 +106,20 @@ func (this *TopicController) View() {
 	}
 
 	tid := this.Ctx.Input.Param("0")
-	this.Data["Topic"] = topic
 	this.Data["Tid"] = tid
 	this.Data["Tag"] = strings.Split(topic.Tag, ",")
+	topic.Content = string(blackfriday.MarkdownCommon([]byte(topic.Content)))
+	this.Data["Topic"] = topic
 
 	replies, err := models.GetAllReplies(tid)
 	if err != nil {
 		beego.Error(err)
 		return
+	}
+
+	for _, reply := range replies {
+		unsafe := blackfriday.MarkdownCommon([]byte(reply.Content))
+		reply.Content = string(bluemonday.UGCPolicy().SanitizeBytes(unsafe))
 	}
 
 	this.Data["Replies"] = replies

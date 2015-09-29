@@ -23,7 +23,7 @@
         {{range .Tag}}
         <a href="/?tag={{.}}">{{.}}</a> {{end}}
       </h5>
-      {{.Topic.Content}}
+      {{str2html .Topic.Content}}
     </div>
   </div>
   <div class="container">
@@ -36,7 +36,7 @@
       <small>{{.Created}}</small>
       {{if $islogin}}<a href="/reply/delete?rid={{.Id}}&tid={{$tid}}">{{i18n $Lang "Category.Delete"}}</a>{{end}}
     </h4>
-    {{.Content}} {{end}}
+    {{str2html .Content}} {{end}}
     <form method="POST" action="/reply/add">
       <input type="hidden" name="tid" value="{{.Topic.Id}}">
       <div class="form-group">
